@@ -6,7 +6,7 @@
 
 #define SWAP(a,b) { tempr=(a);(a)=(b);(b)=tempr; }
 
-static int fournFFT( double *data, long nn[], int ndim, int direct) {  // Direct =1 pour la transformee, -11 poru la transformee inverse
+static int fournFFT( double *data, long nn[], int ndim, int direct) {  // Direct =1 pour la transformee, -1 pour la transformee inverse
    int idim;
    unsigned long i1,i2,i3,i2rev,i3rev,ip1,ip2,ip3,ifp1,ifp2;
    unsigned long ibit,k1,k2,n,nprev,nrem,ntot;
@@ -105,14 +105,14 @@ static int allfft( double** ims_reel, double** ims_imag, double** imd_reel, doub
    unsigned long n;
    double *data, *pf;
    int x,y;
-   // Build a vector with couples (ims_reel[i][j],im_imag[i][j]).
+   // Build a vector with couples (ims_reel[i][j],ims_imag[i][j]).
    // return dimensions ->all power of 2.
    // New values are set to 0.
    nn[0] = dimx;
    nn[1] = dimy;
    n= 2;
    data=pf=(double*)calloc(2*dimx*dimy,sizeof(double));
-   if (!data) { printf("Erreru allocation\n"); return -1; } 
+   if (!data) { printf("Erreur allocation\n"); return -1; } 
    for (y=0; y<dimy; y++) {
       for (x=0;x<dimx;x++) {
          *(pf++) = (double)ims_reel[y][x];
@@ -138,20 +138,23 @@ static int allfft( double** ims_reel, double** ims_imag, double** imd_reel, doub
    return 1;
 }
 
+//teste si x est une puissance de 2
 int ispowerof2(int x) { return ((x != 0) && !(x & (x - 1))); }
 
+//fft directe
 int fft( double** ims_reel, double** ims_imag, double** imd_reel, double** imd_imag , int dimx, int dimy) {
   if (!ispowerof2(dimx) || !ispowerof2(dimy)) { printf("Pas une puissance de 2.\n"); return -1;  }
   return allfft(ims_reel,ims_imag,imd_reel,imd_imag ,1,dimx,dimy);
 }
 
+//fft inverse
 int ifft( double** ims_reel, double** ims_imag, double** imd_reel, double** imd_imag , int dimx, int dimy) {
   if (!ispowerof2(dimx) || !ispowerof2(dimy)) { printf("Pas une puissance de 2.\n"); return -1;  }
   return allfft(ims_reel,ims_imag,imd_reel,imd_imag ,-1,dimx,dimy);
 }
 
 
-/* Shift les cadres de ims (reeel et imag) dans imd reeel et imaghinaire) */
+/* Shift les cadres de ims (reel et imaginaire) dans imd reel et imaginaire) */
 void fftshift( double** imsr, double** imsi, double** imdr, double** imdi, int nl, int nc ) {
    int midx =nc >> 1;
    int midy = nl >> 1;
@@ -192,20 +195,34 @@ void fftshift( double** imsr, double** imsi, double** imdr, double** imdi, int n
       }
  }
 
+// transforme les dimensiosnde l'image pour en faire des puissances de 2
+// input : double
 double** padimdforfft(double** im, int* pnl, int* pnc) {
-  if (ispowerof2(*pnl) && ispowerof2(*pnc)) return im;
-  else { double** res=NULL; int i,j,anl=*pnl,anc=*pnc;
-    *pnl=nextpow2(*pnl); *pnc=nextpow2(*pnc); 
-    if( (res=alloue_image_double(*pnl,*pnc))==NULL) return NULL;
-    for (i=0; i<anl; i++) for(j=0;j<anc; j++) res[i][j]=im[i][j];
+  if (ispowerof2(*pnl) && ispowerof2(*pnc)) 
+    return im;
+  else {
+    double** res=NULL; 
+    int i,j,anl=*pnl,anc=*pnc;
+    *pnl=nextpow2(*pnl); 
+    *pnc=nextpow2(*pnc); 
+    if( (res=alloue_image_double(*pnl,*pnc))==NULL) 
+        return NULL;
+    for (i=0; i<anl; i++) for(j=0;j<anc; j++) 
+        res[i][j]=im[i][j];
     return res;
   }
 }
 
+// transforme les dimensiosnde l'image pour en faire des puissances de 2
+// input : unsigned char
 double** padimucforfft(unsigned char** im, int* pnl, int* pnc) {
-  double** res=NULL; int i,j,anl=*pnl,anc=*pnc;
-  *pnl=nextpow2(*pnl); *pnc=nextpow2(*pnc); 
-  if( (res=alloue_image_double(*pnl,*pnc))==NULL) return NULL;
-  for (i=0; i<anl; i++) for(j=0;j<anc; j++) res[i][j]=im[i][j];
+  double** res=NULL; 
+  int i,j,anl=*pnl,anc=*pnc;
+  *pnl=nextpow2(*pnl); 
+  *pnc=nextpow2(*pnc); 
+  if( (res=alloue_image_double(*pnl,*pnc))==NULL) 
+    return NULL;
+  for (i=0; i<anl; i++) for(j=0;j<anc; j++) 
+    res[i][j]=im[i][j];
   return res;
 }
