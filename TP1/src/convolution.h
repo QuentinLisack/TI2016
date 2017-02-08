@@ -9,10 +9,11 @@
 #define SRC_CONVOLUTION_H_
 
 #include "pgm.h"
+#include <stdio.h>
+#include <math.h>
 
-
-double* initmask(int i);
+double* initmask(int i,double sigma);
 int n_f_de_sigma(double sigma);
-void doConvolve(unsigned char** img);
+unsigned char** doConvolve(unsigned char** img,int nl, int nc, double sigma);
 
 #endif /* SRC_CONVOLUTION_H_ */

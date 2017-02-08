@@ -6,6 +6,9 @@ essai1: essai1.o pgm.o
 
 essai2: essai2.o pgm.o fft.o
 	gcc $(LDFLAGS)  $^  -o $@
+	
+testconv: testconv.o pgm.o convolution.o
+	gcc $(LDFLAGS)  $^  -o $@
 
 %.o:%.c
 	gcc $(CFLAGS) $<
