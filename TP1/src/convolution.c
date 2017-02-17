@@ -27,7 +27,6 @@ double* initmask(int i, double sigma){
 	for(int k=0; k<2*i+1; k++){
 		res[k]=res[k]/sum;
 	}
-	printf("\n %f \n",sum);
 	return res;
 
 }
@@ -49,32 +48,30 @@ unsigned char** doConvolve(unsigned char** img, int nl, int nc, double sigma){
 	double** imgd=alloue_image_double(nl,nc);
 	imgd=imuchar2double(img, nl, nc);
 	double** res=alloue_image_double(nl,nc);
+	double** interm=alloue_image_double(nl,nc);
 	unsigned char ** resc=alloue_image(nl,nc);
 
 
 	for (int i=0; i<nl;i++){
 		for(int j=0; j<nc; j++){
-			res[i][j]=0;
+			interm[i][j]=0;
 			for (int k=-masksize; k<masksize+1; k++){
-				res[i][j]+=mask[masksize+k]*imgd[i][(j+nc+k)%nc];
-			}
-		}
-	}
-	for (int i = 0; i < nl; i++) {
-		for (int j = 0; j < nc; j++) {
-			res[i][j] = 0;
-			for (int k = -masksize; k < masksize + 1; k++) {
-				res[i][j] += mask[masksize+k] * imgd[(i+ nl + k) % nl][j];
+				interm[i][j]+=mask[masksize+k]*imgd[i][(j+nc+k)%nc];
 			}
 		}
 	}
 
-	double sum=0;
-	for (int i=0;i<2*masksize+1;i++){
-		sum+=mask[i];
-		printf("%f ",mask[i]);
+
+	for (int i = 0; i < nl; i++) {
+		for (int j = 0; j < nc; j++) {
+			res[i][j] = 0;
+			for (int k = -masksize; k < masksize + 1; k++) {
+				res[i][j] += mask[masksize+k] * interm[(i+ nl + k) % nl][j];
+			}
+		}
 	}
-	printf("\n %i %f \n",masksize,sum);
+
+
 
 	resc=imdouble2uchar(res,nl,nc);
 	libere_image(res);
