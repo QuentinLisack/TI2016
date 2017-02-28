@@ -195,7 +195,7 @@ void fftshift( double** imsr, double** imsi, double** imdr, double** imdi, int n
       }
  }
 
-// transforme les dimensiosnde l'image pour en faire des puissances de 2
+// transforme les dimensions de l'image pour en faire des puissances de 2
 // input : double
 double** padimdforfft(double** im, int* pnl, int* pnc) {
   if (ispowerof2(*pnl) && ispowerof2(*pnc)) 
@@ -213,7 +213,7 @@ double** padimdforfft(double** im, int* pnl, int* pnc) {
   }
 }
 
-// transforme les dimensiosnde l'image pour en faire des puissances de 2
+// transforme les dimensions de l'image pour en faire des puissances de 2
 // input : unsigned char
 double** padimucforfft(unsigned char** im, int* pnl, int* pnc) {
   double** res=NULL; 
