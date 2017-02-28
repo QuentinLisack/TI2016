@@ -18,7 +18,7 @@ main (int ac, char **av) {  /* av[1] contient le nom de l'image, av[2] le nom du
   im1=lectureimagepgm(av[1],&nl,&nc);
   if (im1==NULL)  { puts("Lecture image impossible"); exit(1); }
 	/* Calcul la convolution par un filtre gaussien*/
-  im2=doConvolve(im1,nl,nc,1);
+  im2=doConvolve(im1,nl,nc,3);
 
 	/* Sauvegarde dans un fichier dont le nom est passe sur la ligne de commande */
   ecritureimagepgm(av[2],im2,nl,nc);
