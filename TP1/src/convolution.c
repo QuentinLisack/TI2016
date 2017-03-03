@@ -30,7 +30,7 @@ double* initmask(int i, double sigma){
 	return res;
 
 }
-//brutal
+//changer apres l'etude comparative
 int n_f_de_sigma(double sigma){
 	int i=1;
 	while (i<3*sigma){i++;}
