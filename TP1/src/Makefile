@@ -1,6 +1,9 @@
 CFLAGS=-c -g -std=gnu99
 LDFLAGS=-lm
 
+testGaussienne: testGaussienne.o pgm.o libFT.o fft.o
+	gcc $(LDFLAGS)  $^  -o $@
+
 essai1: essai1.o pgm.o
 	gcc $(LDFLAGS)  $^  -o $@
 
