@@ -28,12 +28,7 @@ main (int ac, char **av) {  /* av[1] contient le nom de l'image, av[2] le nom du
 
     fftshift(im_r_tf, im_i_tf, im_r_s, im_i_s, nl, nc);
     
-    ecritureimagepgm("gaussienne.pgm", imdouble2uchar(g_r, nl, nc), nl, nc);
-    //ecritureimagepgm("imr.pgm", imdouble2uchar(im_r_s, nl, nc), nl, nc);
-    //ecritureimagepgm("imi.pgm", imdouble2uchar(im_i_s, nl, nc), nl, nc);
     applyFilter(im_r_s, im_i_s, g_r, g_i, nl, nc);
-    //ecritureimagepgm("imrg.pgm", imdouble2uchar(im_r_s, nl, nc), nl, nc);
-    //ecritureimagepgm("imig.pgm", imdouble2uchar(im_i_s, nl, nc), nl, nc);
     fftshift(im_r_s, im_i_s, im_r_tf_b, im_i_tf_b, nl, nc);
     
     res = ifft(im_r_tf_b, im_i_tf_b, im_r, im_i, nl, nc);
