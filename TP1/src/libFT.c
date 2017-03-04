@@ -23,6 +23,55 @@ double** GaussienneFT(int dimx, int dimy, double sigma){
 	return res;
 }
 
+double** idealFilter(int dimx, int dimy, double r1, double r2){
+	double **res;
+	res = alloue_image_double(dimx, dimy);
+	
+	if(!ispowerof2(dimx)){
+        printf("dimx n'est pas une puissande de 2\n");
+        printf("ici, dimx = %i\n", dimx);
+    }
+
+    if(!ispowerof2(dimy)){
+        printf("dimy n'est pas une puissande de 2\n");
+        printf("ici, dimy = %i\n", dimy);
+    }
+	
+	for(int x = -dimx/2; x < dimx/2; x++){
+        for(int y = -dimy/2; y < dimy/2; y++){
+        	if(sqrt(x*x + y*y)<r2 && sqrt(x*x + y*y)>r1){
+        		res[x + dimx/2][y + dimy/2] = 1;
+        	}else{
+            	res[x + dimx/2][y + dimy/2] = 0;
+        	}
+        }
+    }
+    return res;
+}
+
+double**LoG(int dimx, int dimy, double sigma){
+	double ** res;
+	double sum=0;
+	res = alloue_image_double(dimx, dimy);
+
+    if(!ispowerof2(dimx)){
+        printf("dimx n'est pas une puissande de 2\n");
+        printf("ici, dimx = %i\n", dimx);
+    }
+
+    if(!ispowerof2(dimy)){
+        printf("dimy n'est pas une puissande de 2\n");
+        printf("ici, dimy = %i\n", dimy);
+    }
+
+    for(int x = -dimx/2; x < dimx/2; x++){
+        for(int y = -dimy/2; y < dimy/2; y++){
+            res[x + dimx/2][y + dimy/2] = -4 * M_PI * M_PI * (x*x + y*y) * exp(-2 * M_PI * M_PI * sigma * sigma * (x*x + y*y));
+        }
+    }
+	return res;
+}
+
 void applyFilter(double **im_r, double **im_i, double **filter_r, double **filter_i, int dimx, int dimy){
     double i, r;
     for(int n = 0; n < dimx; n++){
@@ -100,4 +149,104 @@ double** applyDOG(unsigned char** image, int* nl, int* nc, double sigma, double 
 	res = alloue_image_double(*nl, *nc);
 	differenceimagesdouble(imRes1, imRes2, res, *nl, *nc);
     return res;
+}
+
+double** applyLoG(unsigned char** image, int* nl, int* nc, double sigma){
+	int oldnl, oldnc;
+    double **im_r, **im_i, **im_r_tf, **im_i_tf, **LoG_r, **LoG_i, **im_r_s, **im_i_s, **im_r_tf_b, **im_i_tf_b, **imRes;
+    
+    oldnl = *nl;
+    oldnc = *nc;
+    
+    im_r = padimucforfft(image, nl, nc);
+    im_i = alloue_image_double(*nl, *nc);
+    im_r_tf = alloue_image_double(*nl, *nc);
+    im_i_tf = alloue_image_double(*nl, *nc);
+    im_r_tf_b = alloue_image_double(*nl, *nc);
+    im_i_tf_b = alloue_image_double(*nl, *nc);
+    im_r_s = alloue_image_double(*nl, *nc);
+    im_i_s = alloue_image_double(*nl, *nc);
+    LoG_r = LoG(*nl, *nc, sigma);
+    LoG_i = alloue_image_double(*nl, *nc);
+    imRes = alloue_image_double(*nl, *nc);
+    
+    int res = fft(im_r, im_i, im_r_tf, im_i_tf, *nl, *nc);
+    if(res != 1)
+        printf("probleme avec la fft\n");
+
+    fftshift(im_r_tf, im_i_tf, im_r_s, im_i_s, *nl, *nc);
+    
+    applyFilter(im_r_s, im_i_s, LoG_r, LoG_i, *nl, *nc);
+    fftshift(im_r_s, im_i_s, im_r_tf_b, im_i_tf_b, *nl, *nc);
+    
+    res = ifft(im_r_tf_b, im_i_tf_b, im_r, im_i, *nl, *nc);
+    if(res != 1)
+        printf("probleme avec la ifft\n");
+    
+    //TODO vérifier que la ligne ci dessous ne pose pas de problème.
+    //imRes = crop(im_r, 0, 0, oldnl, oldnc);
+    copieimagedouble(im_r, imRes, *nl, *nc);
+    
+    libere_image(im_r);
+    libere_image(im_i);
+    libere_image(im_r_tf);
+    libere_image(im_i_tf);
+    libere_image(im_r_tf_b);
+    libere_image(im_i_tf_b);
+    libere_image(im_r_s);
+    libere_image(im_i_s);
+    libere_image(LoG_r);
+    libere_image(LoG_i);
+    
+    return imRes;
+}
+
+double** applyIdealFilter(unsigned char** image, int* nl, int* nc, double r1, double r2){
+	int oldnl, oldnc;
+    double **im_r, **im_i, **im_r_tf, **im_i_tf, **if_r, **if_i, **im_r_s, **im_i_s, **im_r_tf_b, **im_i_tf_b, **imRes;
+    
+    oldnl = *nl;
+    oldnc = *nc;
+    
+    im_r = padimucforfft(image, nl, nc);
+    im_i = alloue_image_double(*nl, *nc);
+    im_r_tf = alloue_image_double(*nl, *nc);
+    im_i_tf = alloue_image_double(*nl, *nc);
+    im_r_tf_b = alloue_image_double(*nl, *nc);
+    im_i_tf_b = alloue_image_double(*nl, *nc);
+    im_r_s = alloue_image_double(*nl, *nc);
+    im_i_s = alloue_image_double(*nl, *nc);
+    if_r = idealFilter(*nl, *nc, r1, r2);
+    if_i = alloue_image_double(*nl, *nc);
+    imRes = alloue_image_double(*nl, *nc);
+    
+    int res = fft(im_r, im_i, im_r_tf, im_i_tf, *nl, *nc);
+    if(res != 1)
+        printf("probleme avec la fft\n");
+
+    fftshift(im_r_tf, im_i_tf, im_r_s, im_i_s, *nl, *nc);
+    
+    applyFilter(im_r_s, im_i_s, if_r, if_i, *nl, *nc);
+    fftshift(im_r_s, im_i_s, im_r_tf_b, im_i_tf_b, *nl, *nc);
+    
+    res = ifft(im_r_tf_b, im_i_tf_b, im_r, im_i, *nl, *nc);
+    if(res != 1)
+        printf("probleme avec la ifft\n");
+    
+    //TODO vérifier que la ligne ci dessous ne pose pas de problème.
+    //imRes = crop(im_r, 0, 0, oldnl, oldnc);
+    copieimagedouble(im_r, imRes, *nl, *nc);
+    
+    libere_image(im_r);
+    libere_image(im_i);
+    libere_image(im_r_tf);
+    libere_image(im_i_tf);
+    libere_image(im_r_tf_b);
+    libere_image(im_i_tf_b);
+    libere_image(im_r_s);
+    libere_image(im_i_s);
+    libere_image(if_r);
+    libere_image(if_i);
+    
+    return imRes;
 }

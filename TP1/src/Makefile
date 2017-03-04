@@ -1,12 +1,18 @@
 CFLAGS=-c -g -std=gnu99
 LDFLAGS=-lm
 
-all:testGaussienne essai1 essai2 testconv testcont testDOG
+all:testGaussienne essai1 essai2 testconv testcont testDOG testLoG testIdealFilter
 
 testGaussienne: testGaussienne.o pgm.o libFT.o fft.o
 	gcc $^ $(LDFLAGS) -o $@
 	
 testDOG: testDOG.o pgm.o libFT.o fft.o
+	gcc $^ $(LDFLAGS) -o $@
+	
+testIdealFilter: testIdealFilter.o pgm.o libFT.o fft.o
+	gcc $^ $(LDFLAGS) -o $@
+	
+testLoG: testLoG.o pgm.o libFT.o fft.o
 	gcc $^ $(LDFLAGS) -o $@
 
 essai1: essai1.o pgm.o
