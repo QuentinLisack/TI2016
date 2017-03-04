@@ -198,6 +198,24 @@ double ** alloue_image_double(int nl, int nc) { int i;
   return p;
 }
 
+//copie ims dans imd
+void copieimagedouble(double** ims, double**imd, int nl, int nc){
+	for(int i = 0; i< nl; i++){
+		for(int j = 0; j<nc; j++){
+			imd[i][j] = ims[i][j];
+		}
+	}
+}
+
+//écrit ims1-ims2 dans imd
+void differenceimagesdouble(double** ims1, double** ims2, double** imd, int nl, int nc){
+	for(int i = 0; i<nl; i++){
+		for(int j = 0; j<nc; j++){
+			imd[i][j] = ims1[i][j] - ims2[i][j];
+		}
+	}
+}
+
 	/* 	
 		Libere la memoire associe a l'image im
 	*/

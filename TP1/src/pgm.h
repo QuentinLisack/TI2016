@@ -27,6 +27,8 @@ unsigned char** lectureimagepgm(char* fic, int* plignes, int* pcols);
 void ecritureimagepgm(char* nom, unsigned char** im, int lignes, int cols);
 double** lectureimagedoubleraw(char* fic, int plignes, int pcol);
 void ecritureimagedoubleraw(char*, double**,int lignes, int cols);
+void copieimagedouble(double** ims, double**imd, int nl, int nc);
+void differenceimagesdouble(double** ims1, double** ims2, double** imd, int nl, int nc);
 
 unsigned char ** alloue_image(int nl, int nc);
 double ** alloue_image_double(int nl, int nc);

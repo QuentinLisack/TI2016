@@ -43,4 +43,61 @@ void getModule(double **im_r, double **im_i, double **mod, int dimx, int dimy){
     }
 }
 
+double** applyGaussian(unsigned char** image, int* nl, int* nc, double sigma){
+	int oldnl, oldnc;
+    double **im_r, **im_i, **im_r_tf, **im_i_tf, **g_r, **g_i, **im_r_s, **im_i_s, **im_r_tf_b, **im_i_tf_b, **imRes;
+    
+    oldnl = *nl;
+    oldnc = *nc;
+    
+    im_r = padimucforfft(image, nl, nc);
+    im_i = alloue_image_double(*nl, *nc);
+    im_r_tf = alloue_image_double(*nl, *nc);
+    im_i_tf = alloue_image_double(*nl, *nc);
+    im_r_tf_b = alloue_image_double(*nl, *nc);
+    im_i_tf_b = alloue_image_double(*nl, *nc);
+    im_r_s = alloue_image_double(*nl, *nc);
+    im_i_s = alloue_image_double(*nl, *nc);
+    g_r = GaussienneFT(*nl, *nc, sigma);
+    g_i = alloue_image_double(*nl, *nc);
+    imRes = alloue_image_double(*nl, *nc);
+    
+    int res = fft(im_r, im_i, im_r_tf, im_i_tf, *nl, *nc);
+    if(res != 1)
+        printf("probleme avec la fft\n");
 
+    fftshift(im_r_tf, im_i_tf, im_r_s, im_i_s, *nl, *nc);
+    
+    applyFilter(im_r_s, im_i_s, g_r, g_i, *nl, *nc);
+    fftshift(im_r_s, im_i_s, im_r_tf_b, im_i_tf_b, *nl, *nc);
+    
+    res = ifft(im_r_tf_b, im_i_tf_b, im_r, im_i, *nl, *nc);
+    if(res != 1)
+        printf("probleme avec la ifft\n");
+    
+    //TODO vérifier que la ligne ci dessous ne pose pas de problème.
+    //imRes = crop(im_r, 0, 0, oldnl, oldnc);
+    copieimagedouble(im_r, imRes, *nl, *nc);
+    
+    libere_image(im_r);
+    libere_image(im_i);
+    libere_image(im_r_tf);
+    libere_image(im_i_tf);
+    libere_image(im_r_tf_b);
+    libere_image(im_i_tf_b);
+    libere_image(im_r_s);
+    libere_image(im_i_s);
+    libere_image(g_r);
+    libere_image(g_i);
+    
+    return imRes;
+}
+
+double** applyDOG(unsigned char** image, int* nl, int* nc, double sigma, double coeff){
+	double **imRes1, **imRes2, **res;
+	imRes1 = applyGaussian(image, nl, nc, sigma);
+	imRes2 = applyGaussian(image, nl, nc, sigma/coeff);
+	res = alloue_image_double(*nl, *nc);
+	differenceimagesdouble(imRes1, imRes2, res, *nl, *nc);
+    return res;
+}

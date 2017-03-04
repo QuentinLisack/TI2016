@@ -5,12 +5,13 @@ main (int ac, char **av) {  /* av[1] contient le nom de l'image, av[2] le nom du
     int nl, nc;
     unsigned char **im=NULL;
     double **res;
-    double sigma = 3;
+    double sigma = 3; 
+    double coeff = 1.6;
     
     im = lectureimagepgm(av[1], &nl, &nc);
 
-	res = applyGaussian(im, &nl, &nc, sigma);
-	
+	res = applyDOG(im, &nl, &nc, sigma, coeff);
+
     ecritureimagepgm(av[2], imdouble2uchar(res, nl, nc), nl, nc);
     
     libere_image(res);
