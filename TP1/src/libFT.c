@@ -39,7 +39,7 @@ double** idealFilter(int dimx, int dimy, double r1, double r2){
 	
 	for(int x = -dimx/2; x < dimx/2; x++){
         for(int y = -dimy/2; y < dimy/2; y++){
-        	if(sqrt(x*x + y*y)<r2 && sqrt(x*x + y*y)>r1){
+        	if(sqrt((((double) (x*x))/(dimx*dimx) + ((double) (y*y))/(dimy*dimy))) <= r2 && sqrt((((double) (x*x))/(dimx*dimx) + ((double) (y*y))/(dimy*dimy))) >= r1){
         		res[x + dimx/2][y + dimy/2] = 1;
         	}else{
             	res[x + dimx/2][y + dimy/2] = 0;
@@ -49,7 +49,7 @@ double** idealFilter(int dimx, int dimy, double r1, double r2){
     return res;
 }
 
-double**LoG(int dimx, int dimy, double sigma){
+double** LoG(int dimx, int dimy, double sigma){
 	double ** res;
 	double sum=0;
 	res = alloue_image_double(dimx, dimy);
@@ -66,7 +66,7 @@ double**LoG(int dimx, int dimy, double sigma){
 
     for(int x = -dimx/2; x < dimx/2; x++){
         for(int y = -dimy/2; y < dimy/2; y++){
-            res[x + dimx/2][y + dimy/2] = -4 * M_PI * M_PI * (x*x + y*y) * exp(-2 * M_PI * M_PI * sigma * sigma * (x*x + y*y));
+            res[x + dimx/2][y + dimy/2] = -4 * M_PI * M_PI * (((double) (x*x))/(dimx*dimx) + ((double) (y*y))/(dimy*dimy)) * exp(-2 * M_PI * M_PI * sigma * sigma * (double) (((double) (x*x))/(dimx*dimx) + ((double) (y*y))/(dimy*dimy)));
         }
     }
 	return res;

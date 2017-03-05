@@ -6,7 +6,7 @@ main (int ac, char **av) {  /* av[1] contient le nom de l'image, av[2] le nom du
     int nl, nc;
     unsigned char **im=NULL;
     double **res;
-    double r1 = 10, r2 = 50;
+    double r1 = 1.0/256.0, r2 = 45.0/256.0;
     
     im = lectureimagepgm(av[1], &nl, &nc);
 

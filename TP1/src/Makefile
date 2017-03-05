@@ -12,7 +12,7 @@ testDOG: testDOG.o pgm.o libFT.o fft.o
 testIdealFilter: testIdealFilter.o pgm.o libFT.o fft.o contourExtract.o
 	gcc $^ $(LDFLAGS) -o $@
 	
-testLoG: testLoG.o pgm.o libFT.o fft.o
+testLoG: testLoG.o pgm.o libFT.o fft.o contourExtract.o
 	gcc $^ $(LDFLAGS) -o $@
 
 essai1: essai1.o pgm.o
