@@ -31,4 +31,4 @@ testcont: testContGrad.o pgm.o contourGradient.o convolution.o
 	gcc $(CFLAGS) $<
 	
 clean:
-	rm -f testGaussienne testDOG testIdealFilter testLoG essai1 essai2 testconv testcont
+	rm -f testGaussienne testDOG testIdealFilter testLoG essai1 essai2 testconv testcont *.o
