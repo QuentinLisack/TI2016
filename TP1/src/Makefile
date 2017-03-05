@@ -9,7 +9,7 @@ testGaussienne: testGaussienne.o pgm.o libFT.o fft.o
 testDOG: testDOG.o pgm.o libFT.o fft.o
 	gcc $^ $(LDFLAGS) -o $@
 	
-testIdealFilter: testIdealFilter.o pgm.o libFT.o fft.o
+testIdealFilter: testIdealFilter.o pgm.o libFT.o fft.o contourExtract.o
 	gcc $^ $(LDFLAGS) -o $@
 	
 testLoG: testLoG.o pgm.o libFT.o fft.o
