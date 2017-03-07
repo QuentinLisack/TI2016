@@ -6,10 +6,10 @@ for file in $path1*
 do
     file=${file#$path1}
     echo $file
-    echo ${path1}${file}
-    echo ${path2}DOG_${file}
-    ./testDOG ${path1}${file} ${path2}DOG_${file}
-    ./testGaussienne ${path1}${file} ${path2}lissageFFT_${file}
-    ./testIdealFilter ${path1}${file} ${path2}idealFilter_${file}
-    ./testLoG ${path1}${file} ${path2}LoG_${file}
+    ./testDOG ${path1}${file} ${path2}Detection/DOG_${file}
+    ./testGaussienne ${path1}${file} ${path2}Lissage/FFT_${file}
+    ./testIdealFilter ${path1}${file} ${path2}Detection/idealFilter_${file}
+    ./testLoG ${path1}${file} ${path2}Detection/LoG_${file}
+    ./testcont ${path1}${file} ${path2}Detection/contGrad_${file}
+    ./testconv ${path1}${file} ${path2}Lissage/conv_${file}
 done
