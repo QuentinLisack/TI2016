@@ -216,6 +216,14 @@ void differenceimagesdouble(double** ims1, double** ims2, double** imd, int nl, 
 	}
 }
 
+void differenceimagesuchar(unsigned char** ims1, unsigned char** ims2, unsigned char** imd, int nl, int nc){
+	for(int i = 0; i<nl; i++){
+		for(int j = 0; j<nc; j++){
+			imd[i][j] = ims1[i][j] - ims2[i][j];
+		}
+	}
+}
+
 	/* 	
 		Libere la memoire associe a l'image im
 	*/
@@ -261,6 +269,20 @@ unsigned char** crop(unsigned char **im,int oi, int oj, int fi, int fj) { int i,
   unsigned char ** res;
   nl=fi-oi; nc=fj-oj;
   if ( (res=alloue_image(nl,nc))==NULL) return NULL;
+  for(i=0; i<nl; i++)
+     for(j=0; j<nc; j++)
+       res[i][j]=im[oi+i][oj+j];
+  return res;
+}
+
+/* 
+		Copie dasn une nouvelle image de la partie de l'image comprise entre les indices (oi,oj) et (fi,fj) de l'image im 
+        */
+double** crop_double(double **im,int oi, int oj, int fi, int fj) { 
+    int i,j,nl,nc;
+  double** res;
+  nl=fi-oi; nc=fj-oj;
+  if ( (res=alloue_image_double(nl,nc))==NULL) return NULL;
   for(i=0; i<nl; i++)
      for(j=0; j<nc; j++)
        res[i][j]=im[oi+i][oj+j];

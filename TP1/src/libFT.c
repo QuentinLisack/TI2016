@@ -124,9 +124,9 @@ double** applyGaussian(unsigned char** image, int nl, int nc, double sigma){
     if(res != 1)
         printf("probleme avec la ifft\n");
     
-    //TODO vérifier que la ligne ci dessous ne pose pas de problème.
-    //imRes = crop(im_r, 0, 0, oldnl, oldnc);
     copieimagedouble(im_r, imRes, nl, nc);
+    
+    imRes = crop_double(imRes, 0, 0, oldnl, oldnc);
     
     libere_image(im_r);
     libere_image(im_i);
@@ -183,9 +183,9 @@ double** applyLoG(unsigned char** image, int nl, int nc, double sigma){
     if(res != 1)
         printf("probleme avec la ifft\n");
     
-    //TODO vérifier que la ligne ci dessous ne pose pas de problème.
-    //imRes = crop(im_r, 0, 0, oldnl, oldnc);
     copieimagedouble(im_r, imRes, nl, nc);
+    
+    imRes = crop_double(imRes, 0, 0, oldnl, oldnc);
     
     libere_image(im_r);
     libere_image(im_i);
@@ -233,9 +233,9 @@ double** applyIdealFilter(unsigned char** image, int nl, int nc, double r1, doub
     if(res != 1)
         printf("probleme avec la ifft\n");
     
-    //TODO vérifier que la ligne ci dessous ne pose pas de problème.
-    //imRes = crop(im_r, 0, 0, oldnl, oldnc);
     copieimagedouble(im_r, imRes, nl, nc);
+    
+    imRes = crop_double(imRes, 0, 0, oldnl, oldnc);
     
     libere_image(im_r);
     libere_image(im_i);

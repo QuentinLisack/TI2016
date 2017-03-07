@@ -1,7 +1,7 @@
 CFLAGS=-c -g -std=gnu99
 LDFLAGS=-lm
 
-all:testGaussienne testconv testcont testDOG testLoG testIdealFilter testGlobal
+all:testGaussienne testconv testcont testDOG testLoG testIdealFilter 
 
 testGaussienne: testGaussienne.o pgm.o libFT.o fft.o
 	gcc $^ $(LDFLAGS) -o $@
@@ -20,12 +20,9 @@ testconv: testconv.o pgm.o convolution.o
 	
 testcont: testContGrad.o pgm.o contourGradient.o convolution.o
 	gcc $^ $(LDFLAGS) -o $@
-	
-testGlobal: testGlobal.o pgm.o libFT.o fft.o contourExtract.o
-	gcc $^ $(LDFLAGS) -o $@
 
 %.o:%.c
 	gcc $(CFLAGS) $<
 	
 clean:
-	rm -f testGaussienne testDOG testIdealFilter testLoG testconv testcont testGlobal *.o
+	rm -f testGaussienne testDOG testIdealFilter testLoG testconv testcont *.o

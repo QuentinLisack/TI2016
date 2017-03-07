@@ -29,6 +29,7 @@ double** lectureimagedoubleraw(char* fic, int plignes, int pcol);
 void ecritureimagedoubleraw(char*, double**,int lignes, int cols);
 void copieimagedouble(double** ims, double**imd, int nl, int nc);
 void differenceimagesdouble(double** ims1, double** ims2, double** imd, int nl, int nc);
+void differenceimagesuchar(unsigned char** ims1, unsigned char** ims2, unsigned char** imd, int nl, int nc);
 
 unsigned char ** alloue_image(int nl, int nc);
 double ** alloue_image_double(int nl, int nc);
@@ -44,6 +45,7 @@ void fftshift( double** imsr, double** imsi, double** imdr, double** imdi, int n
 int nextpow2( int num );
 int ispowerof2(int num);
 unsigned char** crop(unsigned char **im,int oi, int oj, int fi, int fj);
+double** crop_double(double **im,int oi, int oj, int fi, int fj);
 double** padimdforfft(double** im, int* pnl, int* pnc); 
 double** padimd(double** im, int nl, int nc, int anl, int anc); 
 double** padimucforfft(unsigned char ** im, int* pnl, int* pnc); 
