@@ -2,6 +2,11 @@
 path1=$1
 path2=$2
 
+mkdir -p $path2
+mkdir -p ${path2}Lissage
+mkdir -p ${path2}Detection
+mkdir -p ${path2}Lissage_et_detection
+
 echo "PSNR : " > ${path2}PSNR.txt
 echo "Execution time : " > ${path2}execTimeLissage.txt
 
@@ -14,13 +19,29 @@ for sigma in "${array[@]}"
 do
     echo "" >> ${path2}PSNR.txt
     echo "sigma = $sigma" >> ${path2}PSNR.txt
-    for file in $path1*
+    for file in ${path1}formes1*
     do
         file=${file#$path1}
         echo $file
         ./testconv ${path1}${file} ${path2}Lissage/conv_${sigma}_${file} $sigma >> ${path2}execTimeLissage.txt
         ./testGaussienne ${path1}${file} ${path2}Lissage/FFT_${sigma}_${file} $sigma >> ${path2}execTimeLissage.txt
-        ./testPSNR ${path1}$file $sigma >> ${path2}PSNR.txt
+        ./testPSNR ${path1}$file $path1/formes1.pgm $sigma >> ${path2}PSNR.txt
+    done
+    for file in ${path1}formes2*
+    do
+        file=${file#$path1}
+        echo $file
+        ./testconv ${path1}${file} ${path2}Lissage/conv_${sigma}_${file} $sigma >> ${path2}execTimeLissage.txt
+        ./testGaussienne ${path1}${file} ${path2}Lissage/FFT_${sigma}_${file} $sigma >> ${path2}execTimeLissage.txt
+        ./testPSNR ${path1}$file $path1/formes2.pgm $sigma >> ${path2}PSNR.txt
+    done
+    for file in ${path1}globulesb*
+    do
+        file=${file#$path1}
+        echo $file
+        ./testconv ${path1}${file} ${path2}Lissage/conv_${sigma}_${file} $sigma >> ${path2}execTimeLissage.txt
+        ./testGaussienne ${path1}${file} ${path2}Lissage/FFT_${sigma}_${file} $sigma >> ${path2}execTimeLissage.txt
+        ./testPSNR ${path1}$file $path1/globules.pgm $sigma >> ${path2}PSNR.txt
     done
 done
 
