@@ -128,7 +128,6 @@ double** doAll(unsigned char** im,int nl, int nc, int method,double sigma){
 
 
 	im2=doConvolve(im,nl,nc,sigma);
-	ecritureimagepgm("la_bite.pgm",im2,nl,nc);
 	res=doFindContours(imuchar2double(im2,nl,nc),nl,nc,method);
 	libere_image(im2);
 	return res;
