@@ -14,6 +14,6 @@
 
 double* initmask(int i,double sigma);
 int n_f_de_sigma(double sigma);
-unsigned char** doConvolve(unsigned char** img,int nl, int nc, double sigma);
+unsigned char** doConvolve(unsigned char** img,int nl, int nc, double sigma, int m);
 
 #endif /* SRC_CONVOLUTION_H_ */

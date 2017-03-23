@@ -121,13 +121,13 @@ double** doFindContours(double** im,int nl, int nc, int method){
 	return contours;
 }
 
-double** doAll(unsigned char** im,int nl, int nc, int method,double sigma){
+double** doAll(unsigned char** im,int nl, int nc, int method,double sigma, int m){
 
 	unsigned char** im2;
 	double **res;
 
 
-	im2=doConvolve(im,nl,nc,sigma);
+	im2=doConvolve(im,nl,nc,sigma, m);
 	res=doFindContours(imuchar2double(im2,nl,nc),nl,nc,method);
 	libere_image(im2);
 	return res;

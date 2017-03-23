@@ -38,10 +38,14 @@ int n_f_de_sigma(double sigma){
 }
 
 
-unsigned char** doConvolve(unsigned char** img, int nl, int nc, double sigma){
+unsigned char** doConvolve(unsigned char** img, int nl, int nc, double sigma, int m){
 
-	int masksize =n_f_de_sigma(sigma);
-
+    int masksize;
+    if(m == 0){//si la taille du masque n'a pas été fixée, on la fixe automatiquement
+	    masksize = n_f_de_sigma(sigma);
+    }else{
+        masksize = m;
+    }
 
 	double* mask=initmask(masksize, sigma);
 

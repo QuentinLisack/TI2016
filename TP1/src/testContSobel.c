@@ -14,6 +14,7 @@ main (int ac, char **av) {  /* av[1] contient le nom de l'image, av[2] le nom du
   double ** im2=NULL;
   double** im4,** im5, ** im6, ** im7, **im8, **im9,**im10;
   clock_t debut, fin;
+  int masksize = 0;
 
   if (ac < 2) {printf("Usage : %s entree sortie \n",av[0]); exit(1); }
 	/* Lecture d'une image pgm dont le nom est passe sur la ligne de commande */
@@ -23,7 +24,7 @@ main (int ac, char **av) {  /* av[1] contient le nom de l'image, av[2] le nom du
   //im4=imuchar2double(im1,nl,nc);
 
   debut = clock();
-  im2=doAll(im1,nl,nc,2,1.7);
+  im2=doAll(im1,nl,nc,2,1.7, masksize);
   fin = clock();
   printf("%f   Sobel : %s\n", ((double)(fin - debut))/CLOCKS_PER_SEC, av[1]);
   //im2=doFindContours(im4, nl, nc,1);

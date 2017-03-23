@@ -1,7 +1,7 @@
 CFLAGS=-c -g -std=gnu99
 LDFLAGS=-lm
 
-all:testGaussienne testconv testContSobel testContPrewitt testDOG testLoG testIdealFilter testPSNR
+all:testGaussienne testconv testContSobel testContPrewitt testDOG testLoG testIdealFilter testPSNR testPSNRFFT
 
 testGaussienne: testGaussienne.o pgm.o libFT.o fft.o
 	gcc $^ $(LDFLAGS) -o $@
@@ -26,9 +26,12 @@ testContPrewitt: testContPrewitt.o pgm.o contourGradient.o convolution.o
 	
 testPSNR: testPSNR.o pgm.o libFT.o convolution.o fft.o divers.o
 	gcc $^ $(LDFLAGS) -o $@
+	
+testPSNRFFT: testPSNRFFT.o pgm.o libFT.o convolution.o fft.o divers.o
+	gcc $^ $(LDFLAGS) -o $@
 
 %.o:%.c
 	gcc $(CFLAGS) $<
 	
 clean:
-	rm -f testGaussienne testDOG testIdealFilter testLoG testconv testContPrewitt testContSobel testPSNR *.o
+	rm -f testGaussienne testDOG testIdealFilter testLoG testconv testContPrewitt testContSobel testPSNRFFT testPSNR *.o

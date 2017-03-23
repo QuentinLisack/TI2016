@@ -27,6 +27,6 @@ double** threshold(double** grad,int nl,int nc);
 
 double** doFindContours(double** im,int nl, int nc, int method);
 
-double** doAll(unsigned char** im,int nl, int nc, int method,double sigma);
+double** doAll(unsigned char** im,int nl, int nc, int method,double sigma, int m);
 
 #endif /* SRC_CONTOURGRADIENT_H_ */

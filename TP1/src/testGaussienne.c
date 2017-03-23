@@ -14,9 +14,9 @@ main (int ac, char **av) {  /* av[1] contient le nom de l'image, av[2] le nom du
     debut = clock();
 	res = applyGaussian(im, nl, nc, sigma);
 	fin = clock();
-    printf("%f   Gaussian : %s\n", ((double)(fin - debut))/CLOCKS_PER_SEC, av[1]);
+    printf("%f   Gaussian FFT : %s\n", ((double)(fin - debut))/CLOCKS_PER_SEC, av[1]);
 	
-    ecritureimagepgm(av[2], imdouble2uchar(res, nl, nc), nl, nc); //normalement le crop se fait tout seul à l'écriture comme nl et nc n'ont pas été modifiés
+    ecritureimagepgm(av[2], imdouble2uchar(res, nl, nc), nl, nc); //decommenter pour sauvegarder l'image
     
     libere_image(res);
     libere_image(im);
