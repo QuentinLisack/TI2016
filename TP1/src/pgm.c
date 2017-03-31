@@ -289,3 +289,46 @@ double** crop_double(double **im,int oi, int oj, int fi, int fj) {
   return res;
 }
 
+int isdifferentdouble(double**im1, double** im2, int nl, int nc){
+    int res = 1;
+    for(int i = 0; i<nl; i++){
+        for(int j = 0; j<nc; j++){
+            if(im1[i][j] == im2[i][j]){
+                res = 0;
+            }
+        }
+    }
+    return res;
+}
+
+int isdifferentuchar(unsigned char**im1, unsigned char** im2, int nl, int nc){
+    int res = 1;
+    for(int i = 0; i<nl; i++){
+        for(int j = 0; j<nc; j++){
+            if(im1[i][j] == im2[i][j]){
+                res = 0;
+            }
+        }
+    }
+    return res;
+}
+
+void reallocOrDie(void *ptr, size_t size, char *errMess)
+{
+	realloc(ptr, size) ;
+	if (ptr==NULL) {
+		fprintf(stderr, "%s\n", errMess);
+		exit(1);
+	}
+}
+
+void *mallocOrDie(size_t size, char *errMess)
+{
+	void *res = malloc(size) ;
+	if (res==NULL) {
+		fprintf(stderr, "%s\n", errMess);
+		exit(1);
+	}
+	return(res) ;
+}
+

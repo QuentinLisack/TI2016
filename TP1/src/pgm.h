@@ -52,7 +52,10 @@ double** padimucforfft(unsigned char ** im, int* pnl, int* pnc);
 double eqm(unsigned char **im1, unsigned char **im2,  int nl, int nc);
 double psnr(unsigned char **im1, unsigned char **im2,  int nl, int nc) ;
 double psnr_double(double** r, double** i, int nl, int nc);
-
+int isdifferentuchar(unsigned char**im1, unsigned char** im2, int nl, int nc);
+int isdifferentdouble(double**im1, double** im2, int nl, int nc);
+void reallocOrDie(void *ptr, size_t size, char *errMess);
+void *mallocOrDie(size_t size, char *errMess);
 
 double** norme(double** real, double** imag, int nl, int nc);
 double** phase(double** real, double** imag, int nl, int nc);
