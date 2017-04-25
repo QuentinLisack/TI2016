@@ -28,6 +28,7 @@ void ecritureimagepgm(char* nom, unsigned char** im, int lignes, int cols);
 double** lectureimagedoubleraw(char* fic, int plignes, int pcol);
 void ecritureimagedoubleraw(char*, double**,int lignes, int cols);
 void copieimagedouble(double** ims, double**imd, int nl, int nc);
+void copieimageuchar(unsigned char** ims, unsigned char**imd, int nl, int nc);
 void differenceimagesdouble(double** ims1, double** ims2, double** imd, int nl, int nc);
 void differenceimagesuchar(unsigned char** ims1, unsigned char** ims2, unsigned char** imd, int nl, int nc);
 
