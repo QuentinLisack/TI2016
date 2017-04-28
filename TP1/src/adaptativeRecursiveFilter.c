@@ -1,6 +1,6 @@
 #include "adaptativeRecursiveFilter.h"
 
-double calculateWeights(int x, int y, double k, double** im){
+double calculateWeightsAdaptative(int x, int y, double k, double** im){
 	return exp(-(pow(im[x+1][y] - im[x-1][y], 2) + pow(im[x][y+1] - im[x][y-1], 2))/(2*k*k));
 }
 
@@ -23,7 +23,7 @@ void applyAdaptativeRecursiveFilter(double** ims, double** imd, double k, int nl
 		//on remplit le tableau des poids
 		for(int i = 1; i < nl-1; i++){
 			for(int j = 1; j < nc-1; j++){
-				weights[i][j] = calculateWeights(i, j, k, tempImage1);
+				weights[i][j] = calculateWeightsAdaptative(i, j, k, tempImage1);
 			}
 		}
 		
