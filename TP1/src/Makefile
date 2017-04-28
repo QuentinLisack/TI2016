@@ -1,7 +1,7 @@
 CFLAGS=-c -g -std=gnu99
 LDFLAGS=-lm
 
-TP1:testGaussienne testconv testContSobel testContPrewitt testDOG testLoG testIdealFilter testPSNR testPSNRFFT testMedianFilter
+TP1:testGaussienne testconv testContSobel testContPrewitt testDOG testLoG testIdealFilter testPSNR testPSNRFFT testMedianFilter testAdaptativeRecursiveFilter
 
 testGaussienne: testGaussienne.o pgm.o libFT.o fft.o
 	gcc $^ $(LDFLAGS) -o $@
@@ -32,9 +32,12 @@ testPSNRFFT: testPSNRFFT.o pgm.o libFT.o convolution.o fft.o divers.o
 	
 testMedianFilter: testMedianFilter.o pgm.o medianFilter.o
 	gcc $^ $(LDFLAGS) -o $@
+	
+testAdaptativeRecursiveFilter: testAdaptativeRecursiveFilter.o pgm.o adaptativeRecursiveFilter.o
+	gcc $^ $(LDFLAGS) -o $@
 
 %.o:%.c
 	gcc $(CFLAGS) $<
 	
 clean:
-	rm -f testGaussienne testDOG testIdealFilter testLoG testconv testContPrewitt testContSobel testPSNRFFT testPSNR testMedianFilter *.o
+	rm -f testGaussienne testDOG testIdealFilter testLoG testconv testContPrewitt testContSobel testPSNRFFT testPSNR testMedianFilter testAdaptativeRecursiveFilter *.o
