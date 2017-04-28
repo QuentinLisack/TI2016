@@ -21,7 +21,7 @@ main (int ac, char **av) {  /* av[1] contient le nom de l'image, av[2] le nom du
 	applyBilateralFilter(im1, res, s1, s2, nl, nc);
     
     fin = clock();
-    printf("%f   Adaptative Recursive filter : %s\n", ((double)(fin - debut))/CLOCKS_PER_SEC, av[1]);
+    printf("%f   Bilateral filter : %s\n", ((double)(fin - debut))/CLOCKS_PER_SEC, av[1]);
     
     resu = imdouble2uchar(res, nl, nc);
     ecritureimagepgm(av[2], resu, nl, nc);

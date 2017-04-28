@@ -8,7 +8,7 @@ main (int ac, char **av) {  /* av[1] contient le nom de l'image, av[2] le nom du
     double **res, **im1;
     clock_t debut, fin;
     
-    double TOL = 1.0;
+    double TOL = 0.0001;
     double filterParam = 10.0;
     
     im = lectureimagepgm(av[1], &nl, &nc);

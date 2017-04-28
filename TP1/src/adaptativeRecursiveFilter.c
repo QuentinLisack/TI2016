@@ -1,7 +1,7 @@
 #include "adaptativeRecursiveFilter.h"
 
-double calculateWeightsAdaptative(int x, int y, double k, double** im){
-	return exp(-(pow(im[x+1][y] - im[x-1][y], 2) + pow(im[x][y+1] - im[x][y-1], 2))/(2*k*k));
+double calculateWeightsAdaptative(int x, int y, double k, double** im, int nl, int nc){
+	return exp(-(pow(im[(x+1)%nl][y] - im[(x-1+nl)%nl][y], 2) + pow(im[x][(y+1)%nc] - im[x][(y-1+nc)%nc], 2))/(2*k*k));
 }
 
 void applyAdaptativeRecursiveFilter(double** ims, double** imd, double k, int nl, int nc, double TOL){
@@ -21,20 +21,20 @@ void applyAdaptativeRecursiveFilter(double** ims, double** imd, double k, int nl
 		
 		isChanged = 0;
 		//on remplit le tableau des poids
-		for(int i = 1; i < nl-1; i++){
-			for(int j = 1; j < nc-1; j++){
-				weights[i][j] = calculateWeightsAdaptative(i, j, k, tempImage1);
+		for(int i = 0; i < nl; i++){
+			for(int j = 0; j < nc; j++){
+				weights[i][j] = calculateWeightsAdaptative(i, j, k, tempImage1, nl, nc);
 			}
 		}
 		
-		for(int i = 2; i < nl - 2; i ++){
-			for(int j = 2; j < nc - 2; j++){
+		for(int i = 0; i < nl; i ++){
+			for(int j = 0; j < nc; j++){
 				double newPix = 0.0;
 				double w = 0.0;
 				for(int p = -1; p <= 1; p++){
 					for(int k = -1;k <= 1; k++){
-						newPix += weights[i + p][j + k] * tempImage1[i + p][j + k];
-						w += weights[i + p][j + k];
+						newPix += weights[(i + p + nl)%nl][(j + k + nc)%nc] * tempImage1[(i + p + nl)%nl][(j + k + nc)%nc];
+						w += weights[(i + p + nl)%nl][(j + k + nc)%nc];
 					}
 				}
 				tempImage2[i][j] = newPix / w;
@@ -49,4 +49,7 @@ void applyAdaptativeRecursiveFilter(double** ims, double** imd, double k, int nl
 		tempImage1 = tempPointer;
 	}
 	copieimagedouble(tempImage2, imd, nl, nc);
+	libere_image(tempImage1);
+	libere_image(tempImage2);
+	libere_image(weights);
 }
